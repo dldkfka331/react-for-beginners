@@ -24,11 +24,11 @@ function Detail(){
     <div style={{ "& span": { fontSize: "12px", color: "darkgreen" } }}>
       <h3>{detailMovie.movieNm}</h3>
       <p>
-        영화 3213213131 : <span>{detailMovie.movieNmEn}</span>
+        영화 e : <span>{detailMovie.movieNmEn}</span>
       </p>
       {detailMovie.showTm ? (
         <p>
-          영화 상영시간 : <span>{detailMovie.showTm}분</span>
+          영화 f : <span>{detailMovie.showTm}분</span>
         </p>
       ) : null}
       {detailMovie.openDt ? (
