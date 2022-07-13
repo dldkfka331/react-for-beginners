@@ -1,6 +1,18 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Movie from "./../components/Movie";
+import styled from 'styled-components';
+
+const OlFlex = styled.ol`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-left: 20px;
+  & li {
+    width: 50%;
+    position: relative;
+  }
+`;
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -10,10 +22,11 @@ function Home() {
   const getMovies = async () => {
     const json = await (
       await fetch(
-        "https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json?key=ead9cdda0bca2a88ae64f80ea65843ec&targetDt=20220605&weekGb=0"
+        "https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json?key=ead9cdda0bca2a88ae64f80ea65843ec&targetDt=20220310&weekGb=0"
       )
     ).json();
     setMovie(json.boxOfficeResult);
+    console.log(json.boxOfficeResult);
     setMovies(json.boxOfficeResult.weeklyBoxOfficeList);
     setLoading(false);
   };
@@ -24,16 +37,16 @@ function Home() {
 
   return (
     <div>
-      <h1>
-        <span>{movie ? movie.showRange : null}</span> Movie Chart
-      </h1>
+      <h2>
+        <span>{movie ? movie.showRange : null}</span> {movie ? movie.boxofficeType : null}
+      </h2>
       <hr />
       {loading ? (
-        <p>Movies Loading~</p>
+        <p>* Movies Loading *</p>
       ) : (
         <>
           <div>
-            <ol>
+            <OlFlex>
               {movies.map((item) => (
                 <Movie
                   key={item.rnum}
@@ -43,7 +56,7 @@ function Home() {
                   audiChange={item.audiChange}
                 />
               ))}
-            </ol>
+            </OlFlex>
           </div>
         </>
       )}
