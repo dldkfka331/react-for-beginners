@@ -16,29 +16,46 @@ const OlFlex = styled.ol`
 
 function Home() {
   const [loading, setLoading] = useState(true);
+  const [date, setDate] = useState('20210301');
   const [movie, setMovie] = useState();
   const [movies, setMovies] = useState([]);
 
   const getMovies = async () => {
     const json = await (
       await fetch(
-        "https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json?key=ead9cdda0bca2a88ae64f80ea65843ec&targetDt=20220410&weekGb=0"
+        `https://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchWeeklyBoxOfficeList.json?key=ead9cdda0bca2a88ae64f80ea65843ec&targetDt=${date}&weekGb=0`
       )
     ).json();
     setMovie(json.boxOfficeResult);
-    console.log(json.boxOfficeResult);
     setMovies(json.boxOfficeResult.weeklyBoxOfficeList);
     setLoading(false);
+
   };
 
   useEffect(() => {
     getMovies();
-  }, []);
+  }, [date]);
+
+  const onDate = (event) => {
+    setLoading(true);
+    setDate(event.target.value);
+    console.log(event.target[event.eventPhase].innerText)
+  }
 
   return (
     <div>
+      <select value={date} onChange={onDate} style={{ padding: "10px 20px" }}>
+        <option value="20210301">2021년 03월</option>
+        <option value="20210605">2021년 06월</option>
+        <option value="20220105">2022년 01월</option>
+        <option value="20220705">2022년 07월</option>
+      </select>
       <h2>
-        <span>{movie ? movie.showRange : null}</span> {movie ? movie.boxofficeType : null}
+        {movie ? (
+          <>
+            {date.innerText} 첫째주 {movie.boxofficeType}
+          </>
+        ) : null}
       </h2>
       <hr />
       {loading ? (
